@@ -37,11 +37,6 @@ public abstract class AbstractOioMessageChannel extends AbstractOioChannel {
     @Override
     protected void doRead() {
         final ChannelConfig config = config();
-        if (!config.isAutoRead()) {
-            // Config.setAutoRead() was called in the meantime so just return
-            return;
-        }
-
         final ChannelPipeline pipeline = pipeline();
         boolean closed = false;
         final int maxMessagesPerRead = config.getMaxMessagesPerRead();

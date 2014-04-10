@@ -74,11 +74,6 @@ public abstract class AbstractOioByteChannel extends AbstractOioChannel {
             return;
         }
         final ChannelConfig config = config();
-        if (!config.isAutoRead()) {
-            // Config.setAutoRead() was called in the meantime so just return
-            return;
-        }
-
         final ChannelPipeline pipeline = pipeline();
 
         // TODO: calculate size as in 3.x
