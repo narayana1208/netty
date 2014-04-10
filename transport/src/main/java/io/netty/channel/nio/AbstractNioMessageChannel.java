@@ -52,6 +52,11 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
         public void read() {
             assert eventLoop().inEventLoop();
             final ChannelConfig config = config();
+            if (!config.isAutoRead()) {
+                // Config.setAutoRead() was called in the meantime
+                removeReadOp();
+                return;
+            }
 
             final int maxMessagesPerRead = config.getMaxMessagesPerRead();
             final ChannelPipeline pipeline = pipeline();

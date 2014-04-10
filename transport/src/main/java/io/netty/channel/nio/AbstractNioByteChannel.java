@@ -88,6 +88,12 @@ public abstract class AbstractNioByteChannel extends AbstractNioChannel {
         @Override
         public void read() {
             final ChannelConfig config = config();
+            if (!config.isAutoRead()) {
+                // Config.setAutoRead() was called in the meantime
+                removeReadOp();
+                return;
+            }
+
             final ChannelPipeline pipeline = pipeline();
             final ByteBufAllocator allocator = config.getAllocator();
             final int maxMessagesPerRead = config.getMaxMessagesPerRead();
